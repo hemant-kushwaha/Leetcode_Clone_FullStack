@@ -5,11 +5,10 @@ const url = process.env.DB_URL;
 async function connectDB() {
   try {
     await mongoose.connect(url);
-    console.log(`MongoDB Connected`);
+    console.log("MongoDB connected");
   } catch (error) {
-    console.log("DB Error:", error.message);
+    console.log("MongoDB connection error:", error.message);
     process.exit(1);
-
   }
 }
 
