@@ -1,6 +1,6 @@
 const express = require("express");
 const authRouter = express.Router();
-const {register,login,logout,adminRegister} = require('../controllers/auth.controller');
+const {register,login,logout} = require('../controllers/auth.controller');
 const auth = require('../middlewares/auth.middleware')
 
 //Public

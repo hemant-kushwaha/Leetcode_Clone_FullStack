@@ -1,9 +1,8 @@
 {
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "files.autoSave": "afterDelay",
-  "editor.minimap.enabled": false
+  "files.autoSave": "onFocusChange"
 }
