@@ -16,11 +16,6 @@ const problemSchema = new Schema(
       enum: ['easy', 'medium', 'hard'],
       required: true
     },
-    difficulty: {
-      type: String,
-      enum: ['easy', 'medium', 'hard'],
-      required: true
-    },
     tags: {
       type: String,
       enum: ['array', 'string', 'linkedlist'],
@@ -42,7 +37,7 @@ const problemSchema = new Schema(
         }
       }
     ],
-    visibleTestCases: [
+    hiddenTestCases: [
       {
         input: {
           type: String,
@@ -74,7 +69,19 @@ const problemSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user',
       required: true
-    }
+    },
+    referenceSolution: [
+      {
+        language: {
+          type: String,
+          required: true
+        },
+        completeCode: {
+          type: String,
+          required: true
+        }
+      }
+    ]
   },
   { timestamps: true }
 );
