@@ -46,10 +46,6 @@ const problemSchema = new Schema(
         output: {
           type: String,
           required: true
-        },
-        explaination: {
-          type: String,
-          required: true
         }
       }
     ],
