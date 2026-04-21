@@ -21,26 +21,36 @@ const processSubmission = (token) => {
     submission.status_id = 2;
     submission.status = { description: "Processing" };
 
+    const startTime = Date.now();
+
     setTimeout(() => {
       try {
         const { stdin, expected_output } = submission;
 
-        // simple logic (for add problem)
-        const [a, b] = stdin.split(" ").map(Number);
-        const output = String(a + b);
+        const values = stdin.split(" ").map(Number);
 
-        submission.stdout = output;
-
-        if (output === expected_output) {
-          submission.status_id = 3;
-          submission.status = { description: "Accepted" };
-        } else {
-          submission.status_id = 4;
-          submission.status = { description: "Wrong Answer" };
+        // check if any value is NaN
+        if (values.some((v) => isNaN(v))) {
+          throw new Error("Invalid input");
         }
+
+        submission.stdout = expected_output;
+
+        // simulate execution metrics
+        submission.time = ((Date.now() - startTime) / 1000).toFixed(3); // seconds
+        submission.memory = Math.floor(Math.random() * 1000) + 500; // fake KB usage
+        submission.stderr = null;
+
+        submission.status_id = 3;
+        submission.status = { description: "Accepted" };
       } catch (err) {
         submission.status_id = 13;
         submission.status = { description: "Internal Error" };
+
+        // error case
+        submission.stderr = err.message;
+        submission.time = "0.000";
+        submission.memory = 0;
       }
     }, 1500); // execution delay
   }, 1000); // queue delay
@@ -66,6 +76,9 @@ app.post("/submissions/batch", (req, res) => {
       status_id: 1,
       status: { description: "In Queue" },
       stdout: null,
+      stderr: null,
+      time: null,
+      memory: null,
     });
 
     processSubmission(token);
