@@ -22,7 +22,7 @@ problemRouter.delete('/:id', authorizeRole('admin'), deleteProblem);
 
 // Shared Access
 problemRouter.get('/', getAllProblem);
+problemRouter.get('/solved', getAllSolvedProblemByUser);
 problemRouter.get('/:id', getProblemById);
-// problemRouter.get('/solved', getAllSolvedProblemByUser);
 
 module.exports = problemRouter;

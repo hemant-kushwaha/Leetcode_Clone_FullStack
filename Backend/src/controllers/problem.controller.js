@@ -5,6 +5,7 @@ const {
 } = require('../utils/problem');
 
 const Problem = require('../models/Problem.model');
+const User = require('../models/User.model');
 
 const createProblem = async (req, res) => {
   const {
@@ -199,11 +200,24 @@ const getAllProblem = async (req, res) => {
   }
 };
 
+const getAllSolvedProblemByUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).populate({
+      path: 'problemSolved',
+      select: '_id title difficulty tags'
+    });
+    res.status(200).send(user.problemSolved);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   createProblem,
   updateProblem,
   deleteProblem,
   getProblemById,
-  getAllProblem
-  // getAllSolvedProblemByUser
+  getAllProblem,
+  getAllSolvedProblemByUser
 };

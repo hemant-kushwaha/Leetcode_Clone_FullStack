@@ -84,4 +84,39 @@ const submitCode = async (req, res) => {
   }
 };
 
-module.exports = submitCode;
+const runCode = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const problemId = req.params.id;
+
+    const { language, code } = req.body;
+
+    if (!userId || !code || !problemId || !language) {
+      return res.status(400).send('Some field is Missing');
+    }
+
+    //Fetch problem from DB to get Hidden testcases
+    const problem = await Problem.findById(problemId);
+
+    //Judge0
+    const languageId = getLanguageById(language);
+    const submissions = problem.visibleTestCases.map((testCase) => ({
+      source_code: code,
+      language_id: languageId,
+      stdin: testCase.input,
+      expected_output: testCase.output
+    }));
+
+    const submitResult = await submitBatch(submissions);
+
+    const resultToken = submitResult.map((v) => v.token); //[t1,t2,t3]
+
+    const testResult = await submitToken(resultToken);
+
+    res.status(201).send(testResult);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { submitCode, runCode };
