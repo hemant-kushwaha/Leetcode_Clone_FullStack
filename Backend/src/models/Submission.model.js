@@ -51,5 +51,7 @@ const submissionSchema = new Schema(
   { timestamps: true }
 );
 
+submissionSchema.index({ userId: 1, problemId: 1 }); // Compound Index & also optimised for userId
+
 const Submission = mongoose.model('submission', submissionSchema);
 module.exports = Submission;
