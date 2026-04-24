@@ -213,11 +213,32 @@ const getAllSolvedProblemByUser = async (req, res) => {
   }
 };
 
+const submittedProblem = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const problemId = req.params.pid;
+
+    const problemIdAllSubmissions = await Submission.find({
+      userId,
+      problemId
+    });
+
+    if (problemAllSubmissions == 0) {
+      res.status(200).send('No Submission');
+    }
+
+    res.status(200).send(problemIdAllSubmissions);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   createProblem,
   updateProblem,
   deleteProblem,
   getProblemById,
   getAllProblem,
-  getAllSolvedProblemByUser
+  getAllSolvedProblemByUser,
+  submittedProblem
 };

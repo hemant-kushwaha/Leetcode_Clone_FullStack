@@ -9,7 +9,8 @@ const {
   deleteProblem,
   getProblemById,
   getAllProblem,
-  getAllSolvedProblemByUser
+  getAllSolvedProblemByUser,
+  submittedProblem
 } = require('../controllers/problem.controller');
 
 //middleware
@@ -24,5 +25,6 @@ problemRouter.delete('/:id', authorizeRole('admin'), deleteProblem);
 problemRouter.get('/', getAllProblem);
 problemRouter.get('/solved', getAllSolvedProblemByUser);
 problemRouter.get('/:id', getProblemById);
+problemRouter.get('/submitted/:pid', submittedProblem);
 
 module.exports = problemRouter;
